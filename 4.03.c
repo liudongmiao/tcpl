@@ -1,7 +1,7 @@
 /* vim: set sw=4 ts=4:
  * Author: Liu DongMiao <liudongmiao@gmail.com>
  * Created  : Thu 09 Aug 2012 08:27:43 PM CST
- * Modified : Fri 10 Aug 2012 09:45:41 AM CST
+ * Modified : Mon 13 Aug 2012 03:03:56 PM CST
  */
 
 /*
@@ -52,9 +52,9 @@ int main()
 			case '%':
 				op2 = pop();
 				if ((int)op2 != 0)
-					push((int)pop() / (int)op2);
+					push((int)pop() % (int)op2);
 				else
-					printf("error: zero divisor\n");
+					printf("error: zero modulus\n");
 				break;
 #endif
 			case '\n':

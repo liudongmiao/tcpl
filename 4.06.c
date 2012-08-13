@@ -1,7 +1,7 @@
 /* vim: set sw=4 ts=4:
  * Author: Liu DongMiao <liudongmiao@gmail.com>
  * Created  : Fri 10 Aug 2012 10:26:16 AM CST
- * Modified : Fri 10 Aug 2012 10:57:52 PM CST
+ * Modified : Mon 13 Aug 2012 03:04:53 PM CST
  */
 
 /*
@@ -56,9 +56,9 @@ int main()
 			case '%':
 				op2 = pop();
 				if ((int)op2 != 0)
-					push((int)pop() / (int)op2);
+					push((int)pop() % (int)op2);
 				else
-					printf("error: zero divisor\n");
+					printf("error: zero modulus\n");
 				break;
 			case '?':
 				printf("simple calcator\n");
