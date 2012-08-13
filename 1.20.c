@@ -1,7 +1,7 @@
 /* vim: set sw=4 ts=4:
  * Author: Liu DongMiao <liudongmiao@gmail.com>
  * Created  : Fri 27 Jul 2012 08:18:09 PM CST
- * Modified : Sat 04 Aug 2012 06:47:34 PM CST
+ * Modified : Mon 13 Aug 2012 03:08:52 PM CST
  */
 
 /*
@@ -28,11 +28,10 @@ int main()
 			/*	or use do ... while */
 			/*
 			c = TAB - (pos % TAB);
-			while (c) {
-				putchar(' ');
-				c--;
-			}
 			pos += c;
+			while (c--) {
+				putchar(' ');
+			}
 			*/
 			putchar(' ');
 			pos++;
