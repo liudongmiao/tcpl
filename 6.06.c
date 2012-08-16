@@ -1,7 +1,7 @@
 /* vim: set sw=4 ts=4:
  * Author: Liu DongMiao <liudongmiao@gmail.com>
  * Created  : Wed 15 Aug 2012 04:52:23 PM CST
- * Modified : Wed 15 Aug 2012 04:52:23 PM CST
+ * Modified : Thu 16 Aug 2012 11:32:14 AM CST
  */
 
 /*
@@ -27,7 +27,7 @@ int undef(char *s);
 struct nlist *install(char *name, char *defn);
 struct nlist *lookup(char *s);
 
-enum { SPACE, COMMENT, QUOTE, SINGLE, CODE, NEWLINE };
+enum { SPACE, COMMENT, QUOTE, SINGLE, CODE, NEWLINE, NUMBER, OTHER };
 
 int getword(char *word, int lim)
 {
@@ -113,20 +113,21 @@ int getword(char *word, int lim)
 		ungetch(c);
 		*w = '\0';
 		return CODE;
-
-	} else if (c != EOF) {
+	} else if (isdigit(c)) {
 		while (w - word < lim && (*++w = c = getch()) != EOF) {
-			if (isspace(c) || c == '/' || c == '\'' || c == '"') {
+			if (!isdigit(c) && c != 'x' && c != 'X') {
 				break;
-			}
-			if (c == '\\') {
-				*++w = c = getch();
-				continue;
 			}
 		}
 		ungetch(c);
 		*w = '\0';
-		return CODE;
+		return NUMBER;
+	} else if (c != EOF) {
+		if (c == '\\') {
+			*++w = getch();
+		}
+		*++w = '\0';
+		return OTHER;
 	}
 
 	return EOF;
@@ -170,8 +171,8 @@ int main()
 				printf("%s", word);
 				type = getword(word, BUFSIZ);
 			}
-			printf("%s", word);
 			if (strcmp(word, "define") == 0) {
+				printf("%s", word);
 				define = TRUE;
 			}
 		/* define */
@@ -189,8 +190,15 @@ int main()
 			}
 			printf("%s", word);
 			name = strdup(word);
-			while ((type = getword(word, BUFSIZ)) == SPACE)
+			if ((type = getword(word, BUFSIZ)) != SPACE) {
 				printf("%s", word);
+				define = FALSE;
+				continue;
+			}
+			while ((type == SPACE)) {
+				printf("%s", word);
+				type = getword(word, BUFSIZ);
+			}
 			if (type == EOF) {
 				break;
 			}
